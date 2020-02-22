@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<style type="text/css">
+h1{
+	text-align: center;
+	color: crimson;
+	font-size: 2.5em;
+}
+body{
+	background-color: burlywood;
+	text-align: center;
+	font-size: 1.2em;
+}
+p{
+	color: red;
+	font-size: 1.3em;
+	font-style: bold;
+
+}
+#block{
+	display: inline-block;
+  background-color: lightgrey;
+  width: 300px;
+  border: 15px solid green;
+  padding: 50px;
+  margin: 20px;
+}
+#message
+{
+	font-size: 0.7em;
+}
+a{
+	font-size: 0.6em;
+}
+li{
+	color: orangered;
+	text-align: center;
+}
+
+</style>
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<title>Form</title>
+</head>
+<body>
+	<h1>Form</h1>
+	<div id = "message">
+		<ul>
+			<li>Wrong Email & Password<button id ="remove">&#x2718;</button>
+		</ul>	
+	</div>
+	<div id = "block">
+		<div id = "signin">
+			<p>Sign In</p>
+			<form  method="POST">
+				<ul>
+					<li>Name   :  <input type="text" name="name"></li>
+					<li>Mobile :  <input type="text" name="	number"></li>
+					<li>Email   :  <input type="email" name="email"></li>
+					<li>Contry    :  <input type="text" name="contry">	</li>
+					<li>Password    :  <input type="text" name="password">	</li>
+					<input type="submit" name="submit">
+				</ul>
+			</form>
+		</div>
+		<div id = "login">
+			<p>Log In</p>
+			<form method="POST">
+				<ul>
+					<li>Email   :  <input type="email" name="email"></li>
+					<li>Password    :  <input type="password" name="password">	</li>
+					<input type="submit" name="submit">
+				</ul>
+			</form>
+		</div>
+		<button id = "show_signin">Sign In</button>
+		<button id = "show_login">Log In</button>
+			<button onclick="window.location.href = 'http://localhost:5000/delete';">Delete Data</button>
+	</div>
+</body>
+<script type="text/javascript">
+	$("body").ready(function()
+	{
+		$("#signin").hide();
+		$("#login").show();
+	})
+	$("#remove").click(function()
+	{
+		$("#message").hide();
+	});
+	$("#show_login").click(function()
+		{
+			$("#signin").hide();
+			$("#login").show();
+		});
+	$("#show_signin").click(function()
+		{
+			$("#login").hide();
+			$("#signin").show();
+		});
+</script>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<style type="text/css">
+textarea
+{
+	position: inherit;
+}h1{
+	text-align: center;
+	color: crimson;
+	font-size: 2em;
+}
+body{
+	background-color: burlywood;
+	text-align: center;
+	font-size: 1.2em;
+}
+#block{
+	display: inline-block;
+  background-color: lightgrey;
+  width: 600px;
+  border: 15px solid green;
+  padding: 50px;
+  margin: 20px;
+}
+p{
+	color: red;
+	font-size: 1.3em;
+	font-style: bold;
+
+}
+button{
+	font-size: 0.7em;
+}
+li{
+	color: orangered;
+	text-align: center;
+}
+a{
+	font-size: 0.6em;
+}
+</style>
+<head>
+	<title>Complain</title>
+</head>
+<body>
+	<h1>Complain System</h1>
+	<div id = "block">
+		<form id = "detail" method="POST">
+			<ul>
+			<li>Name: <input type="text" name="name"></li>
+			<li>Mobile Number: <input type="text" name="number"></li>
+			<li>Email: <input type="email" name="email"></li>
+			<li>Bank: <select name="bank" id="Bank">
+					<option value="baroda">Bank of Baroda</option>
+					<option value="sbi">State Bank of India</option>
+					<option value="hdfc">HDFC</option>
+					<option value="pnb">Punjab National Bank</option>
+				</select> 
+				</li>
+			<li>Complain: </li>
+			<textarea name="complain" placeholder="Enter your complain here" style="
+	width: 400px;
+	height: 200px;"></textarea>
+			</ul>
+			<input type="submit" name="submit">
+		</form>
+	</div>
+</body>
+</html>
