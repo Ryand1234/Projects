@@ -1,6 +1,0 @@
-{"web":{"client_id":"21092692680-1nono123gju3gi04rr7rmh225un08m1r.apps.googleusercontent.com","project_id":"mineral-nebula-250114",
-"auth_uri":"https://accounts.google.com/o/oauth2/auth",
-"token_uri":"https://oauth2.googleapis.com/token",
-"auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
-"client_secret":"5RYp5o-bRIMGMRo7mPt3Ioc8","redirect_urls":"https://localhost:5000/auth/google",
-"javascript_origins":["https://localhost:5000"]}}
