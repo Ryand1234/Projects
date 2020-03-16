@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hello</title>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+	<p id ='txt1'>This is a string matchin check</p>
+	<form method="POST" action="/submit">
+	<input type="text" name="name">
+	<input type="number" name="people">
+	<input id = "txt" name="movie" placeholder="Enter Text"
+	onkeyup="reload()" onchange="empty()">
+	<input type="submit" name="submit">
+	</form>
+<p id = "reg"></p>
+<div id = "val1">
+<p id="val"></p>
+</div>
+</body>
+<script type="text/javascript">
+	var obj =
+	 {
+		"_id" : ("5d00162be3318daa924b9959"),
+		"submitter" : "Reach",
+     	"model_relation" : "extension",
+     	"extracted_information" : {
+				"interaction_type" : "decreases_activity",
+				"negative_information" : false,
+     			"hypothesis_information" : false,
+         		"context" : {
+             			"Species" : [ 
+                 		"taxonomy:10535"
+             						]
+         					},
+         		"participant_b" : 
+             		{
+                 		"in_model" : true,
+						"identifier" : "uniprot:P29972",
+                 		"entity_text" : "AQP1",
+                 		"entity_type" : "protein"
+             		},
+         		"participant_a" : 	
+             		{
+                 		"in_model" : true,
+             			"identifier" : "interpro:IPR000818",
+                 		"entity_text" : "TEA",
+                 		"entity_type" : "family"
+             		}
+ 									
+
+     								},
+ 		"reading_complete" : "2016-01-08T14:49:54Z",
+     	"reader_type" : "machine",
+     	"reading_started" : "2016-01-08T14:48:55Z",
+     	"trigger" : "Block",
+     	"evidence" : [ "Block by TEA of AQP1" ],
+   	  	"pmc_id" : "100781",
+   	  	"score" : 0
+	}
+
+	var k=0;
+	var Arr = []
+	 for (var i in obj.extracted_information)
+	 {
+	 		k+=1;
+	 		Arr.push(i);
+	 }
+	 function reload(){
+	 var patt = $("#txt").val(); 
+	 document.getElementById("val1").innerHTML =
+	 Arr.filter(function(x){return x.indexOf(patt)>-1;}) ;
+	}
+	function empty(){
+		var new1 = $("#txt").val();
+		if (patt != new1)
+		{
+			document.getElementById("val1").innerHTML =
+	 Arr.filter(function(x){return x.indexOf(new1)>-1;}) ;		
+		}
+		else
+			{document.getElementById("val1").innerHTML = "";}
+	}
+
+</script>
+</html>

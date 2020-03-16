@@ -1,0 +1,8 @@
+extends layout
+
+block content
+	h1= title
+	p Welcome to #{title}
+	p( id ='txt1') This is a string matchin check
+	p(id = "val1")
+	input#txt( type='text', value='TEXT' ,placeholder="Enter Text", onkeyup = !{reload()} onchange = !{empty()})
