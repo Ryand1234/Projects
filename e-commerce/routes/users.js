@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var {check, validationResult} = require('express-validator');
-var {User, product} = require("../config/User.js")
-/* GET users listing. */
-router.get('/register/:token',
+var {User, product} = require("../config/User.js");
+
+router.get('/register',
 [
   check('username').isLength({min: 3}),
   check('email').isLength({min: 1}).isEmail(),
@@ -13,7 +13,7 @@ router.get('/register/:token',
   
 ],
  async (req, res, next) => {
-	
+
 	const error = validationResult(req);
 	if(!error.isEmpty())
 	{
@@ -22,156 +22,61 @@ router.get('/register/:token',
 	}
 	else
 	{
+		var exist = true;
+		var total_token = 0;
+		var new_token = Math.floor(Math.random()*10000);
+		console.log("token: "+ new_token);
+		
+		while(exist){
+			if(total_token>10000)
+			{
+				res.status(301).send("Database Full");
+				break;
+			}
 		nuserinfo = {}
-		nuserinfo.accessToken = req.params.token;
+		nuserinfo.accessToken = new_token;
 		nuserinfo.username = req.body.username;
 		nuserinfo.email = req.body.email;
 		nuserinfo.password = req.body.password;
 		nuserinfo.number = req.body.number;
 		console.log(nuserinfo);
 
-
-
 		var newuser = new User(nuserinfo);
 		console.log(newuser);
 		try{
 			    const saveduser = await newuser.save();
-				res.status(200).send(saveduser);
+			    exist=false;
+				res.status(200);
+  				res.send('User Registered');
   			}catch(err){
-    			res.status(400).send(err);
 				console.log(err);
+				new_token = Math.floor(Math.random()*3);
+				total_token += 1;
 			}
 
 		
-		
-	}
-	res.send('User Registered');
-
-});
-
-router.get('/:utoken/product/add/:ptoken', async (req, res, next)=> {
-	product.findOne({accessToken: req.params.ptoken}, (err, prod)=> {
-			if (err) 
-			{
-				console.log(err);
-				res.send(401).json(err);
-			}
-			else
-			{
-				User.findOne({accessToken:req.params.utoken}, (er, cuser)=>{
-					if (er) 
-					{	
-						console.log(er);
-						res.status(401).send(er);
-					}
-					else
-					{
-						if (!cuser.cart.productname.includes(prod.name))
-						{
-
-							cuser.cart.productname.push(prod.name);
-							cuser.cart.productdetail.push(prod);
-							var prodlist = cuser.cart.productdetail;
-							for(var i=0;i<prodlist.length;i++)
-							{
-								var index;
-								if (prod.accessToken == prodlist[i].accessToken)
-								{
-									prodlist[i].number = req.body.num;
-								}
-							}
-						}
-						else{
-
-							var prodlist = cuser.cart.productdetail;
-							for(var i=0;i<prodlist.length;i++)
-							{
-								var index;
-								if (prod.accessToken == prodlist[i].accessToken)
-								{
-									prodlist[i].number = parseInt(prodlist[i].number) + parseInt(req.body.num);
-								}
-							}
-						}
-						
-						cuser.save();
-						res.status(200).json(cuser);
-						
-					}
-				});
-			}
-	});
-});
-
-router.get('/:utoken/product/remove/:ptoken', async (req, res, next)=> {
-	product.findOne({accessToken: req.params.ptoken}, (err, prod)=> {
-			if (err) 
-			{
-				console.log(err);
-				res.send(401).json(err);
-			}
-			else
-			{
-				User.findOne({accessToken:req.params.utoken}, (er, cuser)=>{
-					if (er) 
-					{	
-						console.log(er);
-						res.status(401).send(er);
-					}
-					else
-					{
-						cuser.cart.productname.pull(prod.name);
-						cuser.cart.productdetail.pull(prod);
-						cuser.save();
-						res.status(200).json(cuser);
-					}
-				});
-			}
-	});
-});
-
-router.get('/:utoken/all', async (req, res, next)=> {
-	 User.findOne({accessToken:req.params.utoken}, (err, users)=> {
-    if (err) 
-	{	
-		console.log(er);
-		res.status(401).send(er);
-	}
-	else
-	{
-		var list = users.cart.productdetail;
-		var list_2 = '';
-		for(var i=0;i<list.length;i++)
-      	{
-      		list_2 += ("product :"+list[i] + '\n');
-      	}
-		res.status(200).send(list_2);
+		}
 	}
 	
+
 });
 
+router.get('/login', async (req, res, next)=> {
+
+	const email = req.body.email;
+	const password = req.body.password;
+
+	User.findOne({email: email, password: password}, (err,user)=>{
+		if(err)
+		{
+			console.log(err);
+			res.status(401).json("Email/Password is incorrect");
+		}
+		else
+		{
+			res.status(200).json(user.accessToken);
+		}
 	});
+});
 
-router.get('/:utoken/checkout', async (req, res, next)=> {
-	User.findOne({accessToken:req.params.utoken}, (err, users)=> {
-    if (err) 
-	{	
-		console.log(er);
-		res.status(401).send(er);
-	}
-	else
-	{
-		var list = users.cart.productdetail;
-		var tprice = 0;
-		var product1 = new Array();
-		for(var i=0;i<list.length;i++)
-      	{
-      		tprice += parseInt(list[i].number*list[i].price);
-      		product1.push(list[i]);
-      	}
-		res.json({price: tprice,
-				product: product1 });
-	} 
-});
-});
 module.exports = router;

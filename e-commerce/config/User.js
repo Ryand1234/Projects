@@ -52,7 +52,8 @@ const userSchema = new mongoose.Schema({
 	},
 
 	accessToken:{
-		type: String
+		type: String,
+		unique: true
 	},
 
 	cart:{
