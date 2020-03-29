@@ -5,7 +5,6 @@ const minimist = require('minimist');
 const nodemailer = require('nodemailer');
 const apikey = process.env.APIKEY;
 const inquirer = require('inquirer');
-//r196nBlmuGN0VDudqC7APMlxlV1VNhNC
 
 const args = require('minimist')(process.argv.slice(2));
 
@@ -13,7 +12,6 @@ if(args.c == undefined){
 	printUsage();
 }
 
-console.log(args.c);
 var location_data;
 var KEY ;
 async function key() {
