@@ -1,2 +1,7 @@
 e-commerce/node_modules
 e-commerce/package-lock.json
+map/node_modules
+map/package-lock.json
+cli/.env
+cli/package-lock.json
+cli/node_modules
