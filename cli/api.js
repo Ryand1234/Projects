@@ -2,7 +2,6 @@
 const axios = require('axios')
 require('dotenv').config();
 const minimist = require('minimist');
-const nodemailer = require('nodemailer');
 const apikey = process.env.APIKEY;
 const inquirer = require('inquirer');
 
@@ -14,6 +13,7 @@ if(args.c == undefined){
 
 var location_data;
 var KEY ;
+
 async function key() {
 
 	location_data = await axios.get('http://dataservice.accuweather.com/locations/v1/cities/search?apikey='+apikey+"&q="+ args.c);
@@ -39,6 +39,10 @@ async function key() {
 		KEY = key[parseInt(choice.city) -1];
 
 	}
+	else{
+
+		KEY = location_data.data[0].Key;
+	}
 	weatherData();
 }
 
@@ -63,13 +67,16 @@ function question (){
 async function weatherData() {
 	
 	const weather_data = await axios.get('http://dataservice.accuweather.com/forecasts/v1/daily/1day/'+ KEY + '?apikey=' + apikey);
-	var weather = weather_data.data.DailyForecasts;
-	console.log(weather_data);
-	console.log(weather[0]);
-	console.log(weather[0].Minimum);
-	console.log(weather[0].Temperature);
-
-	console.log({"Minimum":weather[0].Minimum.Value, "Maximum":weather[0].Maximum.Value});
+	var weather = weather_data.data.DailyForecasts[0].Temperature;
+	var headline = weather_data.data.Headline.Text;
+	var severity = weather_data.data.Headline.Severity;
+	var unit = weather_data.data.DailyForecasts[0].Temperature.Minimum.Unit;
+	var dayPhrase = weather_data.data.DailyForecasts[0].Day.IconPhrase;
+	var nightPhrase = weather_data.data.DailyForecasts[0].Night.IconPhrase;
+	var min = weather.Minimum.Value;
+	var max = weather.Maximum.Value;
+	
+	printResult(headline, severity, unit, dayPhrase, nightPhrase, min, max);
 }
 
 function printUsage() {
@@ -78,4 +85,19 @@ function printUsage() {
 	console.log("	-c: City Name");
 	process.exit(1);
 }
+
+function printResult(headline, severity, unit, dayPhrase, nightPhrase, min, max){
+	console.log("--------------------Weather Updates--------------")
+	console.log("");
+	console.log("		Headline: "+headline);
+	console.log("		Severity: "+severity);
+	console.log("		Minimum Temperature: "+min+' '+unit);
+	console.log("		Maximum Temperature: "+max+' '+unit);
+	console.log("		Day Phrase: "+dayPhrase);
+	console.log("		Night Phrase: "+nightPhrase);
+	console.log("");
+	console.log("--------------------Report Ends--------------");
+}
+
+
 key();
